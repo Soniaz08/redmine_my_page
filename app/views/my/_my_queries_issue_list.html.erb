@@ -14,7 +14,7 @@
                                 :limit => query_limit.to_i)
     %>
     <h3>
-      <%= "#{l(:label_query)} : " %><%= link_to "#{query.name}", issues_path( param_hash ) %> (<%= "#{query_issues_count}" %>)
+      <%= "#{l(:label_query)} : " %><%= link_to "#{query.name}", issues_path( param_hash ) %> (Showing <%= "#{query_limit.to_i}" %>/<%= "#{query_issues_count}" %> <%="issue".pluralize(query_issues_count)%>)
     </h3>
     <%= render :partial => 'issues/list_simple', :locals => { :issues => query_issues } %>
   <% else %>

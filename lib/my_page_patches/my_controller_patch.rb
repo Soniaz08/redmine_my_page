@@ -29,9 +29,6 @@ module MyPagePatches
         if params["type"].present? && params["type"] == 'my_cust_query'
           @vartype = "my_cust_query"
           @my_cust_query = @object == 'dashboard' ? @dashboard.my_cust_query : @pref.my_cust_query
-        else
-          @vartype = "my_activity"
-          @my_cust_query = @object == 'dashboard' ? @dashboard.my_activity : @pref.my_activity
         end
 
         visible_queries_array = IssueQuery.visible.
@@ -51,10 +48,6 @@ module MyPagePatches
             dashboard_pref[:limit]      = params["my_cust_query"]["limit"] || 10
             dashboard_pref[:query_ids]  = params["my_cust_query"]["query_ids"].any? ? params["my_cust_query"]["query_ids"].collect { |i| i.to_i } : []
             @dashboard.save
-          elsif params["my_activity"].present?
-            dashboard_pref              = @dashboard.my_activity
-            dashboard_pref[:query_ids]  = params["my_activity"]["query_ids"].any? ? params["my_activity"]["query_ids"].collect { |i| i.to_i } : []
-            @dashboard.save
           end
           redirect_to dashboards_path( :id => @dashboard.id )
         else
@@ -62,10 +55,6 @@ module MyPagePatches
             @user_pref              = User.current.pref.my_cust_query
             @user_pref[:limit]      = params["my_cust_query"]["limit"] || 10
             @user_pref[:query_ids]  = params["my_cust_query"]["query_ids"].any? ? params["my_cust_query"]["query_ids"].collect { |i| i.to_i } : []
-            User.current.pref.save
-          elsif params["my_activity"].present?
-            @user_pref              = User.current.pref.my_activity
-            @user_pref[:query_ids]  = params["my_activity"]["query_ids"].any? ? params["my_activity"]["query_ids"].collect { |i| i.to_i } : []
             User.current.pref.save
           end
           redirect_to my_page_path
